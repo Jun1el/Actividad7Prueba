@@ -1,5 +1,6 @@
 from behave import given, when, then
 import re
+from src.belly import Belly
 
 # Función para convertir palabras numéricas a números
 def convertir_palabra_a_numero(palabra):
@@ -16,10 +17,14 @@ def convertir_palabra_a_numero(palabra):
         }
         return numeros.get(palabra.lower(), 0)
 
-@given('que he comido {cukes:d} pepinos')
+@given('que he comido {cukes} pepinos')
 def step_given_eaten_cukes(context, cukes):
-    context.belly.comer(cukes)
-
+    try:
+        cukes = float(cukes)  # Convertir a float para manejar fracciones
+        context.belly.comer(cukes)
+    except ValueError:
+        raise ValueError(f"No se pudo interpretar la cantidad de pepinos: {cukes}")
+    
 @when('espero {time_description}')
 def step_when_wait_time_description(context, time_description):
     time_description = time_description.strip('"').lower()
