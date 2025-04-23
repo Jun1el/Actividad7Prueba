@@ -22,8 +22,8 @@ def step_given_eaten_cukes(context, cukes):
     try:
         cukes = float(cukes)  # Convertir a float para manejar fracciones
         context.belly.comer(cukes)
-    except ValueError:
-        raise ValueError(f"No se pudo interpretar la cantidad de pepinos: {cukes}")
+    except ValueError as e:
+        context.error = str(e)  # Capturar el error en el contexto
     
 @when('espero {time_description}')
 def step_when_wait_time_description(context, time_description):
@@ -61,3 +61,8 @@ def step_then_belly_should_growl(context):
 @then('mi estómago no debería gruñir')
 def step_then_belly_should_not_growl(context):
     assert not context.belly.esta_gruñendo(), "Se esperaba que el estómago no gruñera, pero lo hizo."
+
+@then('debería ocurrir un error')
+def step_then_should_raise_error(context):
+    assert hasattr(context, 'error'), "Se esperaba un error, pero no ocurrió ninguno."
+    assert context.error == "La cantidad de pepinos no puede ser negativa.", f"El error esperado era 'La cantidad de pepinos no puede ser negativa.', pero se obtuvo: {context.error}"
