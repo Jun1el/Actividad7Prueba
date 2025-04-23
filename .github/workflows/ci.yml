@@ -1,0 +1,36 @@
+name: Run Tests
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+
+        steps:
+        -   name: Checkout code
+            uses: actions/checkout@v3
+
+        -   name: Set up Python
+            uses: actions/setup-python@v4
+            with:
+                python-version: '3.9'
+
+        -   name: Install dependencies
+            run: |
+                python -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+                pip install behave pytest
+
+        -   name: Run Behave tests
+            run: |
+                source venv/bin/activate
+                behave
+
+        -   name: Run Pytest tests
+            run: |
+                source venv/bin/activate
+                pytest
