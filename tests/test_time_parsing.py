@@ -1,5 +1,5 @@
 import re
-from feature.steps.steps import convertir_palabra_a_numero
+from features.steps.steps import convertir_palabra_a_numero
 
 def parse_time_description(time_description):
     time_description = time_description.strip('"').lower()
